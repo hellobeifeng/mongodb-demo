@@ -9,52 +9,52 @@ var ObjectId = Schema.Types.ObjectId;
  */
 
 var CommentSchema = new mongoose.Schema({
-    movie:{
-        type:ObjectId,
-        ref:'Movie'
+  movie: {
+    type: ObjectId,
+    ref: 'Movie'
+  },
+  from: {
+    type: ObjectId,
+    ref: 'User'
+  },
+  //回复功能的数据结构
+  reply: [{
+    from:{type:ObjectId,ref:'User'},
+    to:{type:ObjectId,ref:'User'},
+    content:String
+  }],
+  content: String,
+  meta: {
+    createAt: {
+      type: Date,
+      default: Date.now()
     },
-    from:{
-        type:ObjectId,
-        ref:'User'
-    },
-    //回复功能的数据结构
-    reply:[{
-        from:{type:ObjectId,ref:'User'},
-        to:{type:ObjectId,ref:'User'},
-        content:String
-    }],
-    content:String,
-    meta: {
-        createAt: {
-            type: Date,
-            default: Date.now()
-        },
-        updateAt: {
-            type: Date,
-            default: Date.now()
-        }
+    updateAt: {
+      type: Date,
+      default: Date.now()
     }
+  }
 });
 CommentSchema.pre('save',function(next){
-    if (this.isNew) {
-        this.meta.updateAt = this.meta.createAt = Date.now();
-    } else {
-        this.meta.updateAt = Date.now();
-    }
-    next()
+  if (this.isNew) {
+    this.meta.updateAt = this.meta.createAt = Date.now();
+  } else {
+    this.meta.updateAt = Date.now();
+  }
+  next()
 });
 
 CommentSchema.statics = {
-    fetch: function (cb) {
-        return this.find({})
-            .sort('meta.updateAt')
-            .exec(cb)
-    },
-    findById: function (id,cb) {
-        return this.findOne({_id: id})
-            .sort('meta.updateAt')
-            .exec(cb);
-    }
+  fetch: function (cb) {
+    return this.find({})
+      .sort('meta.updateAt')
+      .exec(cb)
+  },
+  findById: function (id,cb) {
+    return this.findOne({_id: id})
+      .sort('meta.updateAt')
+      .exec(cb);
+  }
 };
 
-module.exports = mongoose.model('comment',CommentSchema);
+module.exports = mongoose.model('comment', CommentSchema);

@@ -4,10 +4,13 @@ var Category = require('../models/category')
 var _ = require('lodash')
 
 module.exports = {
+  // 重点关注：通过 populate方式，一次性将关联的表字段查出来
   all: function (req, res) {
     Category
       .find({})
-      .populate({ path: 'movies', options: { limit:5 }})
+      // 什么也不做，则最终categorys的每一项都有一个movies数组属性，其中每一项保存着关联的所有分类下每一个movie _id属性
+      // .populate('movies', 'title') // 使用这种暗访时，则则最终categorys的每一项都有一个movies数组属性，其中每一项保存着关联的所有分类下每一个movie _id属性和特定筛选出的title属性
+      .populate({ path: 'movies', options: { limit:5 }}) // 最终categorys中的每一项都有一个movies数组属性，其中每一项保存着关联的所有分类下每一个movie的全部属性
       .exec(function (err, categories) {
         if (err) {
           console.log('##err', err)

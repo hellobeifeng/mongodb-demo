@@ -4,6 +4,7 @@ var ObjectId = Schema.Types.ObjectId;
 
 var MovieSchema = new Schema({
   title: String,
+  desc: String,
   category: {
     type: ObjectId,
     ref: 'Category'

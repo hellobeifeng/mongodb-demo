@@ -19,7 +19,7 @@ router.get('/movie/search', movieController.search);//查询结果
  * comment模型
  */
 router.post('/comment/new', commentController.postNew);//提交一个评论
-
+router.get('/comment/list', commentController.list); // 评论列表
 /**
  * category模型
  */
