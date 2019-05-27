@@ -145,26 +145,16 @@ module.exports = {
     var id = req.params.id;
     Movie.findById(id, function (err, movie) {
       Comment
-        .find({movie: id})
-        .populate('from', 'username')//将from指向的User文档中的username属性提取到当前的from对象中，前端直接使用from.username
+        .find({ movie: id })
+        .populate('from', 'username role') // 将from指向的User文档中的username属性提取到当前的from对象中，前端直接使用from.username
         .populate('reply.from reply.to', 'username')
         .exec(function (err, comments) {
-            /*
-               comments ->
-               { reply: [],
-               meta:
-               { createAt: Sun Jun 12 2016 23:13:12 GMT+0800 (中国标准时间),
-               updateAt: Sun Jun 12 2016 23:13:12 GMT+0800 (中国标准时间) },
-               __v: 0,
-               content: 'ffff',
-               from: { meta: {}, username: 'feng', _id: 5688a75f75f1ba400e48719f },
-               movie: 57598f5dbba76e840579344d,
-               _id: 575d7c08fd819a9419ea3d20 }
-             */
           res.json({
             title: '电影详情',
-            movie: movie,
-            comments: comments
+            data: {
+              movie,
+              comments
+            }
           })
         });
     })

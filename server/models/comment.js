@@ -11,16 +11,16 @@ var ObjectId = Schema.Types.ObjectId;
 var CommentSchema = new mongoose.Schema({
   movie: {
     type: ObjectId,
-    ref: 'Movie'
+    ref: 'movie'
   },
   from: {
     type: ObjectId,
-    ref: 'User'
+    ref: 'user'
   },
   //回复功能的数据结构
   reply: [{
-    from:{type:ObjectId,ref:'User'},
-    to:{type:ObjectId,ref:'User'},
+    from:{type:ObjectId,ref:'user'},
+    to:{type:ObjectId,ref:'user'},
     content:String
   }],
   content: String,
